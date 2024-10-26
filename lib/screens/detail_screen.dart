@@ -159,13 +159,21 @@ class DetailScreen extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(15),
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Divider(
-                          color: Colors.deepPurple.shade100,
-                        ),
+                        SizedBox(height: 16,),
+                        // info atas (nama candi dan tombol favortit)
+                        Row(),
+                        //info tengah(lokasi, dibangun, tipe)
+                        SizedBox(height: 16,),
+                        Row(children: [],),
+                        Row(children: [],),
+                        Row(children: [],),
+                        SizedBox(height: 16,),
+                        Divider(color: Colors.deepPurple.shade100,),
+                        SizedBox(height: 16,),
                         Text(
                           'Galeri',
                           style: TextStyle(
@@ -220,7 +228,7 @@ class DetailScreen extends StatelessWidget {
                           height: 4,
                         ),
                         Text(
-                          'Tap Untuk Memperbesar',
+                          'Tap untuk memperbesar',
                           style: TextStyle(
                             fontSize: 12,
                             color: Colors.black54,
