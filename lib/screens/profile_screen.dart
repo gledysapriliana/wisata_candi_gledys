@@ -43,7 +43,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                         child: CircleAvatar(
                           radius: 50,
-                          backgroundImage: AssetImage('images/placeholder_images.png'),
+                          backgroundImage: AssetImage('images/placeholder_image.png'),
                         ),
                       ),
                       if(isSignIn)
