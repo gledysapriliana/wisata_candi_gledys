@@ -65,6 +65,17 @@ class _SearchScreenState extends State<SearchScreen> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
+                      Padding(
+                        padding: EdgeInsets.all(8),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(candi.name, style: TextStyle(fontSize: 16, fontWeight: fontWeight.bold)),
+                            SizedBox(height: 4),
+                            Text(candi.location)
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 );
