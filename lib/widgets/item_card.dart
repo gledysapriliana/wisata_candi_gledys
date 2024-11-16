@@ -25,10 +25,19 @@ class ItemCard extends StatelessWidget {
               ),
             ),
           ),
-          Text("data"),
-          Text("data"),
           //TODO: 4. Buat Text sebagai anak dari Column
+          Padding(
+            padding: EdgeInsets.only(left: 16, top: 8),
+            child: Text(candi.name,
+              style: TextStyle(fontSize: 16,
+                  fontWeight: FontWeight.bold )),
+          ),
           //TODO: 5. Buat Text sebagai anak dari Column
+          Padding(
+            padding: EdgeInsets.only(left: 16, top: 8),
+            child: Text(candi.type,
+                style: TextStyle(fontSize: 12)),
+          ),
         ],
       ),
     );
