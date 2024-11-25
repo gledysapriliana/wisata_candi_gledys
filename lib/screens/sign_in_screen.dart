@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignInscreen extends StatefulWidget {
   SignInscreen({super.key});
@@ -15,10 +16,47 @@ class _SignInscreenState extends State<SignInscreen> {
   final TextEditingController _passwordController = TextEditingController();
 
   String _errorText = ' ';
-
-  bool _isSignedIn = false;
-
+  final bool _isSignedIn = true;
   bool _obscurePassword = true;
+
+  void _signOn() async{
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String savedUsername = prefs.getString('username') ?? '';
+    final String savedPassword = prefs.getString('password') ?? '';
+    final String enteredUsername = _usernameController.text.trim();
+    final String enteredPassword = _passwordController.text.trim();
+
+    if (enteredUsername.isEmpty || enteredPassword.isEmpty){
+      setState(() {
+        _errorText = 'Nama pengguna dan kata sandi harus diisi.';
+      });
+      return;
+    }
+
+    if (savedUsername.isEmpty || savedPassword.isEmpty ){
+      setState(() {
+        _errorText =
+        'Pengguna belum terdaftar. Silakan daftar terlebih dahulu.';
+      });
+      return;
+    }
+
+    if (enteredUsername == savedUsername && enteredPassword == savedPassword){
+      setState(() {
+        _errorText = '';
+        final _isSignedIn = true;
+        prefs.setBool('isSignIn', true);
+      });
+      // Pemanggil untuk menghapus semua halaman dalam tumpukan navigasi
+      WidgetsBinding.instance.addPostFrameCallback((_){
+        Navigator.of(context).popUntil((route) => route.isFirst);
+      });
+    } else{
+      setState(() {
+        _errorText = 'Nama pengguna atau kata sandi salah.';
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +126,9 @@ class _SignInscreenState extends State<SignInscreen> {
                               fontSize: 16
                           ),
                           recognizer: TapGestureRecognizer()
-                            ..onTap = () {},
+                            ..onTap = () {
+                            Navigator.pushNamed(context, '/signup');
+                            },
                         ),
                       ],
                     ),
@@ -100,6 +140,5 @@ class _SignInscreenState extends State<SignInscreen> {
         ),
       ),
     );
-
   }
 }

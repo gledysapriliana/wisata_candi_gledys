@@ -13,7 +13,7 @@ void main() {
       initialRoute: '/',
       routes:{
         '/':(context) => SignUpScreen(),
-        '/SignInScreen' : (context) => SignInScreen(),
+        '/SignInScreen' : (context) => SignInscreen(),
         // '/SignUpScreen' : (context) => SignUpScreen(),
       }
   ));
@@ -26,6 +26,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Wisata Candi',
       theme: ThemeData(
         appBarTheme: const AppBarTheme(
@@ -43,6 +44,12 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: MainScreen(),
+      initialRoute: '/',
+      routes: {
+        '/homescreen': (context) => const HomeScreen(),
+        '/signin': (context) => SignInscreen(),
+        '/signup': (context) => SignUpScreen(),
+      },
     );
   }
 }
@@ -100,7 +107,7 @@ class _MainScreenState extends State<MainScreen> {
               ),
             ],
           ),
-      ),
-    );
-  }
+     ),
+    );
+  }
 }

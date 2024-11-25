@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 class SignUpScreen extends StatefulWidget {
@@ -22,26 +23,33 @@ class _SignUpScreenState extends State<SignUpScreen> {
   bool _obscurePassword = true;
 
    //TODO: 1.Membuat method _signUp
-  void _signUp(){
-    String name = _fullnameController.text.trim();
-    String username = _usernameController.text.trim();
-    String password = _passwordController.text.trim();
+  void _signUp() async{
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String name = _fullnameController.text.trim();
+    final String username = _usernameController.text.trim();
+    final String password = _passwordController.text.trim();
+
     if(password.length < 8 ||
-    !password.contains(RegExp(r'[A-Z]'))||
-    !password.contains(RegExp(r'[a-z]'))||
-    !password.contains(RegExp(r'[0-9]'))||
-    !password.contains(RegExp(r'[!@#\\\$%^&*(),.?":{}|<>]'))){
+        !password.contains(RegExp(r'[A-Z]'))||
+        !password.contains(RegExp(r'[a-z]'))||
+        !password.contains(RegExp(r'[0-9]'))||
+        !password.contains(RegExp(r'[!@#\\\$%^&*(),.?":{}|<>]'))){
       setState(() {
-        _errorText = 'Minimal 8 karakter, kombinasi [A-Z], [a-z], [0-9], [!@#\\\$%^&*(),.?":{}|<>]';
+        _errorText =
+        'Minimal 8 karakter, kombinasi [A-Z], [a-z], [0-9], [!@#\\\$%^&*(),.?":{}|<>]';
       });
+      return;
     }
-    print('*** Sign Up berhasil!');
-    print('Nama: $name');
-    print('Nama Pengguna: $username');
-    print('Password: $password');
+    //simpan data pengguna di SharedPreferences
+    prefs.setString('fulname', name);
+    prefs.setString('username', username);
+    prefs.setString('password', password);
+
+    //buat navigasi ke SignInScreen
+    Navigator.pushReplacementNamed(context, '/signin');
   }
 
-  //TODO: 2.Membuat method dispose
+  //TODO: 2.Membuat metode dispose
   @override
   void dispose(){
     //TODO: Implement dispose
