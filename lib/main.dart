@@ -8,18 +8,24 @@ import 'package:wisata_candi/screens/sign_in_screen.dart';
 import 'package:wisata_candi/screens/sign_up_screen.dart';
 import 'data/candi_data.dart';
 
-
 void main() {
-  runApp(const MyApp());
+  runApp(MaterialApp(
+      initialRoute: '/',
+      routes:{
+        '/':(context) => SignUpScreen(),
+        '/SignInScreen' : (context) => SignInScreen(),
+        // '/SignUpScreen' : (context) => SignUpScreen(),
+      }
+  ));
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
       title: 'Wisata Candi',
       theme: ThemeData(
         appBarTheme: const AppBarTheme(
@@ -30,14 +36,13 @@ class MyApp extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-        colorScheme:
-        ColorScheme.fromSeed(seedColor: Colors.deepPurple).copyWith(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple).copyWith(
           primary: Colors.deepPurple,
           surface: Colors.deepPurple[50],
         ),
         useMaterial3: true,
       ),
-      home: const MainScreen(),
+      home: MainScreen(),
     );
   }
 }
@@ -50,10 +55,9 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  // TODO: 1. Deklarasikan variabel
+  // TODO: 1. Deklarasi Variabel
   int _currentIndex = 0;
-
-  final List<Widget> _children = [
+  final List<Widget>_children = [
     HomeScreen(),
     SearchScreen(),
     FavoriteScreen(),
@@ -65,38 +69,38 @@ class _MainScreenState extends State<MainScreen> {
     return Scaffold(
       // TODO: 2. Buat properti body berupa widget yang ditampilkan
       body: _children[_currentIndex],
-      // TODO: 3. Buat properti bottomNavigatorBar dengan nilai theme
+      // TODO: 3. Buat properti bottomNavigationBar dengan nilai Theme
       bottomNavigationBar: Theme(
-        // TODO: 4. Buat data dan child dari theme
-        data: Theme.of(context).copyWith(
-          canvasColor: Colors.deepPurple[50],
-        ),
-        child: BottomNavigationBar(
-          currentIndex: _currentIndex,
+        // TODO: 4. Buat data dan child dari Theme
+          data: Theme.of(context).copyWith(
+            canvasColor: Colors.deepPurple[50]
+          ),
+          child: BottomNavigationBar(
+            selectedItemColor: Colors.deepPurple,
+            unselectedItemColor: Colors.deepPurple[100],
+            showUnselectedLabels: true,
+            currentIndex: _currentIndex,
             onTap: (index){
               setState(() {
                 _currentIndex = index;
               });
             },
-            items: const[
+            items: [
               BottomNavigationBarItem(
-                icon: Icon(Icons.home, color: Colors.deepPurple,),
+                icon: Icon(Icons.home, color: Colors.deepPurple),
                 label: 'Home',
               ),
               BottomNavigationBarItem(
-                  icon: Icon(Icons.search, color: Colors.deepPurple,),
-                  label: 'Search',
+                icon: Icon(Icons.search, color: Colors.deepPurple),
+                label: 'Search',
               ),
               BottomNavigationBarItem(
-                  icon: Icon(Icons.favorite, color: Colors.deepPurple,),
-                  label: 'Favorite',
+                icon: Icon(Icons.favorite, color: Colors.deepPurple),
+                label: 'Favorite',
               ),
             ],
-            selectedItemColor: Colors.deepPurple,
-            unselectedItemColor: Colors.deepPurple[100],
-            showUnselectedLabels: true,
-        ),
-      ),
-    );
-  }
+          ),
+      ),
+    );
+  }
 }
