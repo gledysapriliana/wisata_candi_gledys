@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+
 class SignInscreen extends StatefulWidget {
   SignInscreen({super.key});
 
@@ -19,7 +20,70 @@ class _SignInscreenState extends State<SignInscreen> {
   final bool _isSignedIn = true;
   bool _obscurePassword = true;
 
-  void _signOn() async{
+  Future<Map<String, String>> _retrieveAndDecryptDataFromPrefs(
+      Future<SharedPreferences> prefs,
+      ) async {
+    final sharedPreferences = await prefs;
+    final encryptedUsername = sharedPreferences.getString('username') ?? '';
+    final encryptedPassword = sharedPreferences.getString('password') ?? '';
+    final keyString = sharedPreferences.getString('key') ?? '';
+    final ivString = sharedPreferences.getString('iv') ?? '';
+
+    final encrypt.Key key = encrypt.Key.fromBase64(keyString);
+    final iv = encrypt.IV.fromBase64(ivString);
+
+    final encrypter = encrypt.Encrypter(encrypt.AES(key));
+    final decryptedUsername =
+    encrypter.decrypt64(encryptedUsername, iv: iv);
+    final decryptedPassword =
+    encrypter.decrypt64(encryptedPassword, iv: iv);
+
+    //mengembalikan data terdeskripsi
+    return {'username': decryptedUsername, 'password': decryptedPassword};
+  }
+  
+  void _signIn() async{
+    try {
+      final Future<SharedPreferences> prefsFuture =
+      SharedPreferences.getInstance();
+
+      final String username = _usernameController.text;
+      final String password = _passwordController.text;
+      print('Sign in attempt');
+      
+      if (username.isNotEmpty && password.isNotEmpty){
+        final SharedPreferences prefs = await prefsFuture;
+        final data = await _retrieveAndDecryptDataFromPrefs(prefs);
+        if (data.isNotEmpty){
+          final decryptedUsername = data['username'];
+          final decryptedPassword = data['password'];
+
+          if (username == decryptedUsername && decryptedPassword == decryptedPassword){
+            _errorText = '';
+            _isSignedIn = true;
+            prefs.setBool('isSignIn', true);
+            // Pemanggilan untuk menghapus semua halaman dalam tumpukan navigasi
+            WidgetsBinding.instance.addPostFrameCallback((_){
+              Navigator.of(context).popUntil((route) => route.isFirst);
+            });
+            // Sign in berhasil, navigasikan ke layar utama
+            WidgetsBinding.instance.addPostFrameCallback((_){
+              Navigator.pushReplacementNamed(context, '/');
+            });
+            print('Sign in succeeded');
+          } else{
+            print('Username or password is incorrect');
+          }
+        } else {
+          print('No stored crendentials found');
+        }
+      } else {
+        print('Username and Passowrd cannot be empty');
+        // Tambahkan pesan untuk kasus ketika username atau password kosong
+      }
+    } catch (e) {
+      print('An error occurred: $e');
+    }
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String savedUsername = prefs.getString('username') ?? '';
     final String savedPassword = prefs.getString('password') ?? '';

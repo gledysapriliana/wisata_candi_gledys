@@ -16,6 +16,31 @@ class _DetailScreenState extends State<DetailScreen> {
   bool isFavorite = false;
   bool isSignedIn = false;
 
+  @override
+  void initState(){
+    super.initState();
+    _checkSignInStatus(); // Memeriksa status sign in saat layar dibuat
+    _loudFavoriteStatus(); // Memeriksa status favorite saat layar dibuat
+  }
+
+  //Memeriksa status sign in
+  void _checkSignInStatus() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool signIn = prefs.getBool('isSignIn') ?? false;
+    setState(() {
+      isSignedIn;
+    });
+  }
+
+  //Memeriksa status favorite
+  void _loudFavoriteStatus() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool favorite = prefs.getBool('favorite_${widget.candi.name}') ?? false;
+    setState(() {
+      isFavorite = favorite;
+    });
+  }
+
   Future<void> _toggleFavorite() async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -99,7 +124,14 @@ class _DetailScreenState extends State<DetailScreen> {
                         ),
                       ),
                       IconButton(
-                          onPressed: () {}, icon: Icon(Icons.favorite_border))
+                          onPressed: () {
+                            _toggleFavorite();
+                          },
+                          icon: Icon(isSignedIn && isFavorite
+                              ? Icons.favorite
+                              : Icons.favorite_border,
+                               color: isSignedIn && isFavorite ? Colors.red : null,)
+                      )
                     ],
                   ),
                   // info tengah (lokasi, dibangun, tipe)
