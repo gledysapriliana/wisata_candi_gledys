@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:encrypt/encrypt.dart' as encrypt;
 
 
 class SignInscreen extends StatefulWidget {
@@ -84,43 +85,44 @@ class _SignInscreenState extends State<SignInscreen> {
     } catch (e) {
       print('An error occurred: $e');
     }
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String savedUsername = prefs.getString('username') ?? '';
-    final String savedPassword = prefs.getString('password') ?? '';
-    final String enteredUsername = _usernameController.text.trim();
-    final String enteredPassword = _passwordController.text.trim();
 
-    if (enteredUsername.isEmpty || enteredPassword.isEmpty){
-      setState(() {
-        _errorText = 'Nama pengguna dan kata sandi harus diisi.';
-      });
-      return;
-    }
-
-    if (savedUsername.isEmpty || savedPassword.isEmpty ){
-      setState(() {
-        _errorText =
-        'Pengguna belum terdaftar. Silakan daftar terlebih dahulu.';
-      });
-      return;
-    }
-
-    if (enteredUsername == savedUsername && enteredPassword == savedPassword){
-      setState(() {
-        _errorText = '';
-        final _isSignedIn = true;
-        prefs.setBool('isSignIn', true);
-      });
-      // Pemanggil untuk menghapus semua halaman dalam tumpukan navigasi
-      WidgetsBinding.instance.addPostFrameCallback((_){
-        Navigator.of(context).popUntil((route) => route.isFirst);
-      });
-    } else{
-      setState(() {
-        _errorText = 'Nama pengguna atau kata sandi salah.';
-      });
-    }
-  }
+  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   final String savedUsername = prefs.getString('username') ?? '';
+  //   final String savedPassword = prefs.getString('password') ?? '';
+  //   final String enteredUsername = _usernameController.text.trim();
+  //   final String enteredPassword = _passwordController.text.trim();
+  //
+  //   if (enteredUsername.isEmpty || enteredPassword.isEmpty){
+  //     setState(() {
+  //       _errorText = 'Nama pengguna dan kata sandi harus diisi.';
+  //     });
+  //     return;
+  //   }
+  //
+  //   if (savedUsername.isEmpty || savedPassword.isEmpty ){
+  //     setState(() {
+  //       _errorText =
+  //       'Pengguna belum terdaftar. Silakan daftar terlebih dahulu.';
+  //     });
+  //     return;
+  //   }
+  //
+  //   if (enteredUsername == savedUsername && enteredPassword == savedPassword){
+  //     setState(() {
+  //       _errorText = '';
+  //       final _isSignedIn = true;
+  //       prefs.setBool('isSignIn', true);
+  //     });
+  //     // Pemanggil untuk menghapus semua halaman dalam tumpukan navigasi
+  //     WidgetsBinding.instance.addPostFrameCallback((_){
+  //       Navigator.of(context).popUntil((route) => route.isFirst);
+  //     });
+  //   } else{
+  //     setState(() {
+  //       _errorText = 'Nama pengguna atau kata sandi salah.';
+  //     });
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
