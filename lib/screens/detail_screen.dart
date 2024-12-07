@@ -70,18 +70,21 @@ class _DetailScreenState extends State<DetailScreen> {
             //detail header
             Stack(
               children: [
-                //padding image
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: Image.asset(
+                //image utama
+                Hero(
+                  tag: widget.candi.imageAsset,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: Image.asset(
                       widget.candi.imageAsset,
                       width: double.infinity,
                       height: 300,
                       fit: BoxFit.cover,
                     ),
                   ),
+                ),
                 ),
                 //padding back button
                 Padding(
